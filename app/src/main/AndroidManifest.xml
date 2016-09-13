@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.br.cotaacaoapp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".AcaoApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_acao"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".CadastroPapel"></activity>
+
+        <receiver android:name=".task.receiver.EventoReceberAtualizacao">
+            <intent-filter>
+                <action android:name="INTENT_CONSULTA_ACAO" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>
