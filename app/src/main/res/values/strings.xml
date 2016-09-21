@@ -7,4 +7,5 @@
     <string name="lblValorCompra">Valor de compra</string>
     <string name="lblQuantidade">Quantidade</string>
     <string name="lblDataCompra">Data da compra</string>
+    <string name="apagarTudo">Apagar Tudo</string>
 </resources>

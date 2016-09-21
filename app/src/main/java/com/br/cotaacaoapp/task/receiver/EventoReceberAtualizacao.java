@@ -44,6 +44,8 @@ public class EventoReceberAtualizacao extends BroadcastReceiver {
 
             this.delegate.atualizaPapel(papel);
 
+
+
         }
 
 

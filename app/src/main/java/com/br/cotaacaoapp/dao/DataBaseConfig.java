@@ -34,7 +34,7 @@ public class DataBaseConfig extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL(CarteiraDAO.SCRIPT_DELETE);
+        db.execSQL(CarteiraDAO.SCRIPT_DROP);
 
         onCreate(db);
     }

@@ -1,12 +1,11 @@
 package com.br.cotaacaoapp.task.http;
 
-import android.app.Application;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.br.cotaacaoapp.AcaoApplication;
+import com.br.cotaacaoapp.MainActivity;
 import com.br.cotaacaoapp.dto.Papel;
 import com.br.cotaacaoapp.dto.PapelAtualizado;
 import com.br.cotaacaoapp.enumerators.Oscilacao;
@@ -17,7 +16,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -41,9 +39,12 @@ public class AcaoGoogleTask extends AsyncTask<Papel,Void,PapelAtualizado>{
     private static String PERCENTUAL_DIA = "cp";
 
     private AcaoApplication application;
+    Papel papel;
 
     public AcaoGoogleTask(AcaoApplication application)
     {
+        if(application==null)
+            return;
         this.application = application;
         this.application.registraTask(this);
     }
@@ -51,17 +52,17 @@ public class AcaoGoogleTask extends AsyncTask<Papel,Void,PapelAtualizado>{
     @Override
     protected PapelAtualizado doInBackground(Papel... papel) {
 
-        Log.i("AcaoGooogleTask.doInBackground","Papel "+ papel);
 
         if(papel == null || papel.length==0)
             return null;
 
-
-        PapelAtualizado papelAtualizado = new PapelAtualizado();
-        String codigoPapel = papel[0].getCodigoPapel();
-        Log.i("atualizando", "atualizando acoes "+papel[0].getCodigoPapel());
+        this.papel = papel[0];
+        PapelAtualizado papelAtualizado = null;
+        String codigoPapel = this.papel.getCodigoPapel();
+        Log.i("AcaoGoogleTask.doInBackground", "inicio atualizando acoes "+papel[0].getCodigoPapel());
 
         try {
+            papelAtualizado = new PapelAtualizado();
             // obtendo o valor atualizado
             URL url = new URL(BASE_URL + codigoPapel);
 
@@ -97,7 +98,7 @@ public class AcaoGoogleTask extends AsyncTask<Papel,Void,PapelAtualizado>{
             papelAtualizado.setValorAtual(retorno.getDouble(ULTIMO_PRECO));
             papelAtualizado.setOscilacaoPrecoDia(retorno.getDouble(OSCILACAO_PRECO));
 
-            String oscilacaoFormatada = retorno.getString(OSCILACAO_PRECO_FORMATADO).substring(0,1);
+            String oscilacaoFormatada = retorno.getString(OSCILACAO_PRECO).substring(0,1);
             Oscilacao oscilacao = Oscilacao.NEUTRO;
             switch (oscilacaoFormatada) {
                 case "+":
@@ -109,15 +110,18 @@ public class AcaoGoogleTask extends AsyncTask<Papel,Void,PapelAtualizado>{
             }
             papelAtualizado.setOscilacao(oscilacao);
 
-            Log.i("AcaoGooogleTask.doInBackground","Papel atualizado "+papelAtualizado);
+            Log.i("AcaoGoogleTask.doInBackground", "final atualizando acoes "+papelAtualizado);
 
 
         }catch (Exception e)
         {
+            papelAtualizado = null;
             Log.e("Erro======", e.getMessage());
+
         }
         return papelAtualizado;
     }
+
 
 
     @Override
@@ -128,10 +132,15 @@ public class AcaoGoogleTask extends AsyncTask<Papel,Void,PapelAtualizado>{
 
         if(retorno != null){
             EventoReceberAtualizacao.notifica(this.application,retorno);
-            this.application.desregistra(this);
 
+        }else{
+            Toast.makeText(application.getApplicationContext(),"Erro ao atualizar: "+papel.getCodigoPapel(),Toast.LENGTH_SHORT).show();
         }
+        this.application.desregistra(this);
+
     }
+
+
 
 
     /**

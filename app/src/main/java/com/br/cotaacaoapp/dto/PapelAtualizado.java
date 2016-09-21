@@ -9,7 +9,7 @@ import java.util.Enumeration;
 /**
  * 
  * @author Michel
- *Classe responsavel por manter a atualizaçao do valor de cada papel constante na carteira
+ *Classe responsavel por manter a atualizaçao do valor de cada papel constante na carteiraController
  */
 public class PapelAtualizado implements Serializable{
 
@@ -79,5 +79,10 @@ public class PapelAtualizado implements Serializable{
 
 		return this.codigoPapel.equals(((Papel)obj).getCodigoPapel());
 
+	}
+
+	@Override
+	public String toString() {
+		return getCodigoPapel();
 	}
 }

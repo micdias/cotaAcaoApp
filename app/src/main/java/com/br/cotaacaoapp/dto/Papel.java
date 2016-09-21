@@ -8,13 +8,12 @@ import java.util.Date;
  */
 public class Papel {
 	
-	
+	private Integer idPapel;
 	private String descricaoPapel;
 	private String codigoPapel;
 	private Date dataCompra;
 	private double valorCompra;
-	private Date horaAtualizacao;
-	private int quantidade;
+    private int quantidade;
 	private PapelAtualizado papelAtualizado = new PapelAtualizado();
 	
 	public String getDescricaoPapel() {
@@ -41,14 +40,6 @@ public class Papel {
 	public void setValorCompra(double valorCompra) {
 		this.valorCompra = valorCompra;
 	}
-
-	public Date getHoraAtualizacao() {
-		return horaAtualizacao;
-	}
-	public void setDataAtualizacao(Date horaAtualizacao) {
-		this.horaAtualizacao = horaAtualizacao;
-	}
-
 
 	@Override
 	public boolean equals(Object obj) {
@@ -82,5 +73,13 @@ public class Papel {
 		this.papelAtualizado = papelAtualizado;
 	}
 
+
+    public Integer getIdPapel() {
+        return idPapel;
+    }
+
+    public void setIdPapel(Integer idPapel) {
+        this.idPapel = idPapel;
+    }
 
 }

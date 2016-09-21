@@ -18,7 +18,7 @@ public class AcaoController {
 
 	public void consultarValorAcao(Papel papel)
 	{
-		Log.i("consultando papel ",papel.getCodigoPapel());
+		Log.i("AcaoController.consultarValorAcao ",papel.getCodigoPapel());
 		new AcaoGoogleTask(this.application).execute(papel);
 
 		//return dao.consultaValorAtual(papel);

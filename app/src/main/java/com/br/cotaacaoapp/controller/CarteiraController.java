@@ -1,33 +1,28 @@
 package com.br.cotaacaoapp.controller;
 
-import android.content.Context;
-
 import com.br.cotaacaoapp.AcaoApplication;
 import com.br.cotaacaoapp.dao.CarteiraDAO;
 import com.br.cotaacaoapp.dto.Carteira;
 import com.br.cotaacaoapp.dto.Papel;
-import com.br.cotaacaoapp.dto.PapelAtualizado;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 
 public class CarteiraController {
 
 	private CarteiraDAO carteiraDAO = null;
-	private Carteira carteira = null;
 	private AcaoApplication application;
+    private AcaoController controlAcao;
 
-	public CarteiraController(AcaoApplication application)
+
+    public CarteiraController(AcaoApplication application)
 	{
 		this.application = application;
 		carteiraDAO = CarteiraDAO.getInstance(application);
+        controlAcao = new AcaoController(application);
 
-		if(carteira == null)
-			carteira = carteiraDAO.carregarCarteira();
-
-		//atualizarValorAcao();
+        if(getCarteira() == null)
+			setCarteira(carteiraDAO.carregarCarteira());
 
 	}
 
@@ -37,19 +32,24 @@ public class CarteiraController {
 	public boolean inserirPapel(Papel papel)
 	{
 	
-		carteira.inserirItemCarteira(papel);
-		return true;
-	}
+
+        if(carteiraDAO.inserirPapel(papel)) {
+			getCarteira().inserirItemCarteira(papel);
+			controlAcao.consultarValorAcao(papel);
+        }
+
+        return true;
+
+    }
 	
 	public boolean removerPapel(Papel papel)
 	{
-		return carteira.removerItemCarteira(papel);
+		return getCarteira().removerItemCarteira(papel);
 	}
 	
 	public void atualizarValorAcao()
 	{
-		AcaoController controlAcao = new AcaoController(application);
-		for (Papel papel : carteira.getPapeis()) {
+		for (Papel papel : getCarteira().getPapeis()) {
 			controlAcao.consultarValorAcao(papel);
 
 		}
@@ -58,7 +58,7 @@ public class CarteiraController {
 	public void calculaDiferencaAcao()
 	{
 		
-		for (Papel papel : carteira.getPapeis()) {
+		for (Papel papel : getCarteira().getPapeis()) {
 			System.out.println("Compra= "+ papel.getValorCompra()+" Valor Atual= "+ papel.getPapelAtualizado().getValorAtual()
 			+" Diferenca= "+ ((papel.getPapelAtualizado().getValorAtual() - papel.getValorCompra())) +
 			"Percentual "+ ((papel.getPapelAtualizado().getValorAtual() - papel.getValorCompra()/papel.getValorCompra()))+"%"
@@ -72,6 +72,21 @@ public class CarteiraController {
 
 	public ArrayList<Papel> getPapeis()
 	{
-		return carteira.getPapeis();
+		return getCarteira().getPapeis();
+	}
+
+
+	public Carteira getCarteira() {
+		return application.getCarteira();
+	}
+
+	public void setCarteira(Carteira carteira) {
+		this.application.setCarteira(carteira);
+	}
+
+	public void apagarTudo() {
+		carteiraDAO.apagarTudo();
+		this.application.getCarteira().getPapeis().clear();
+
 	}
 }

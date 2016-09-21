@@ -3,7 +3,7 @@ package com.br.cotaacaoapp.dto;
 /**
  * 
  * @author Michel
- *Classe responsavel por manter a atualizaçao do valor de cada papel constante na carteira
+ *Classe responsavel por manter a atualizaçao do valor de cada papel constante na carteiraController
  */
 public class PapelAtualizado_Y extends PapelAtualizado{
 	

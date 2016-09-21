@@ -3,6 +3,7 @@ package com.br.cotaacaoapp;
 import android.app.Application;
 import android.os.AsyncTask;
 
+import com.br.cotaacaoapp.dto.Carteira;
 import com.br.cotaacaoapp.dto.PapelAtualizado;
 
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import java.util.List;
 public class AcaoApplication extends Application {
 
     private List<AsyncTask> tasks = new ArrayList<>();
-    private PapelAtualizado papelAtualizado ;
+    private Carteira carteira;
 
     @Override
     public void onTerminate() {
@@ -35,11 +36,11 @@ public class AcaoApplication extends Application {
     }
 
 
-    public PapelAtualizado getPapelAtualizado() {
-        return papelAtualizado;
+    public Carteira getCarteira() {
+        return carteira;
     }
 
-    public void setPapelAtualizado(PapelAtualizado papelAtualizado) {
-        this.papelAtualizado = papelAtualizado;
+    public void setCarteira(Carteira carteira) {
+        this.carteira = carteira;
     }
 }

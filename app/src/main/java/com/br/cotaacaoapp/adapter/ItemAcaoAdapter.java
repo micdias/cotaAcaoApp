@@ -1,18 +1,22 @@
 package com.br.cotaacaoapp.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import com.br.cotaacaoapp.R;
 
 import com.br.cotaacaoapp.dto.Carteira;
 import com.br.cotaacaoapp.dto.Papel;
+import com.br.cotaacaoapp.dto.PapelAtualizado;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -45,8 +49,14 @@ public class ItemAcaoAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        //super.getView()
         Papel papel = (Papel) getItem(position);
 
         ViewHolder holder;
@@ -65,9 +75,9 @@ public class ItemAcaoAdapter extends BaseAdapter {
         }
 
 
-        holder.papel.setText(String.valueOf(papel.getCodigoPapel()));
-        holder.valorCompra.setText(String.valueOf(papel.getValorCompra()));
-        holder.valorAtual.setText(String.valueOf(papel.getPapelAtualizado().getValorAtual()));
+        holder.papel.setText(papel.getCodigoPapel());
+        holder.valorCompra.setText(doubleFormater(papel.getValorCompra()));
+        holder.valorAtual.setText(doubleFormater(papel.getPapelAtualizado().getValorAtual()));
 
         int idImagem = 0;
         switch (papel.getPapelAtualizado().getOscilacao()) {
@@ -79,9 +89,14 @@ public class ItemAcaoAdapter extends BaseAdapter {
         holder.oscilacao.setImageDrawable(this.context.getResources().getDrawable(idImagem));
 
       //  holder.valorizacao.setText(String.valueOf(papel.getPapelAtualizado().getValorAtual()-papel.getValorCompra()));
-        holder.valorizacao.setText(String.valueOf(0));
+        holder.valorizacao.setText(doubleFormater(papel.getPapelAtualizado().getOscilacaoPrecoDia()));
 
-       // notifyDataSetChanged();
+
+        if(papel.getPapelAtualizado().getOscilacaoPrecoDia() <0)
+            holder.valorizacao.setTextColor(Color.RED);
+        else
+            holder.valorizacao.setTextColor(Color.GREEN);
+
 
 
         return convertView;
@@ -89,6 +104,11 @@ public class ItemAcaoAdapter extends BaseAdapter {
 
     }
 
+    private String doubleFormater(double valor)
+    {
+        DecimalFormat formatter = new DecimalFormat("R$ #0.00");
+        return formatter.format(valor);
+    }
 
 }
 

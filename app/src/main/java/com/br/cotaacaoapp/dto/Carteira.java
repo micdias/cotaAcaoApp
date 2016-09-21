@@ -1,20 +1,19 @@
 package com.br.cotaacaoapp.dto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Carteira {
 	private String descricao;
-	ArrayList<Papel> carteira = new ArrayList<Papel>();
+	private ArrayList<Papel> listPapeis = new ArrayList<Papel>();
 
 	public void inserirItemCarteira(Papel papel)
 	{
-		carteira.add(papel);
+		getListPapeis().add(papel);
 	}
 	
 	public boolean removerItemCarteira(Papel papel)
 	{
-		return carteira.remove(papel);
+		return getListPapeis().remove(papel);
 		
 	}
 
@@ -28,8 +27,15 @@ public class Carteira {
 
 	public ArrayList<Papel> getPapeis()
 	{
-		return carteira;
+		return getListPapeis();
 	}
 
 
+	public ArrayList<Papel> getListPapeis() {
+		return listPapeis;
+	}
+
+	public void setListPapeis(ArrayList<Papel> listPapeis) {
+		this.listPapeis = listPapeis;
+	}
 }

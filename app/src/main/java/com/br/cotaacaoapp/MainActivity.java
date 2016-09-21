@@ -1,37 +1,48 @@
 package com.br.cotaacaoapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.br.cotaacaoapp.adapter.ItemAcaoAdapter;
 import com.br.cotaacaoapp.controller.CarteiraController;
+import com.br.cotaacaoapp.dto.Carteira;
 import com.br.cotaacaoapp.dto.Papel;
 import com.br.cotaacaoapp.dto.PapelAtualizado;
 import com.br.cotaacaoapp.task.receiver.EventoReceberAtualizacao;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends Activity implements AtualizaAcaoDelegate {
 
-    public CarteiraController carteira;
+    public CarteiraController carteiraController;
     public EventoReceberAtualizacao evento;
+
+    private ItemAcaoAdapter adapter;
+    private SwipeRefreshLayout swipeContainer;
+    private ListView listCarteira;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         this.evento = EventoReceberAtualizacao.registraObservador(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        int layout = android.R.layout.simple_list_item_1;
+
+
+        carteiraController = new CarteiraController(getAcaoApplication());
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -39,14 +50,15 @@ public class MainActivity extends Activity implements AtualizaAcaoDelegate {
                 recarregaListaPapeis();
             }
 
+
         });
 
+        adapter = new ItemAcaoAdapter(this, getAcaoApplication().getCarteira().getListPapeis());
 
-        recarregaListaPapeis();
-
+        listCarteira = (ListView) findViewById(R.id.listCarteiras);
+        listCarteira.setAdapter(adapter);
 
     }
-
 
     @Override
     protected void onResume() {
@@ -56,52 +68,40 @@ public class MainActivity extends Activity implements AtualizaAcaoDelegate {
 
     private void recarregaListaPapeis() {
 
-        int layout = android.R.layout.simple_list_item_1;
-        carteira = new CarteiraController(getAcaoApplication());
+        carteiraController.atualizarValorAcao();
 
-        carteira.atualizarValorAcao();
-
-        // ArrayAdapter<Object> adapter = new ArrayAdapter<Object>(this, layout, carteira.getPapeis().toArray());
-        poeNaTela();
-
-    }
-
-    private void poeNaTela()
-    {
-
-        ItemAcaoAdapter adapter = new ItemAcaoAdapter(this, carteira.getPapeis());
-
-        ListView listCategoria = (ListView) findViewById(R.id.listCarteiras);
-        listCategoria.setAdapter(adapter);
-
-        SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         swipeContainer.setRefreshing(false);
-
     }
 
     @Override
     public void atualizaPapel(PapelAtualizado papelAtualizado) {
 
+
         Log.i("MainActivity","atualizaPapel "+papelAtualizado.getCodigoPapel() + " " + papelAtualizado.getValorAtual());
-        ArrayList<Papel> papeis =  carteira.getPapeis();
+        ArrayList<Papel> papeis =  getAcaoApplication().getCarteira().getPapeis();
+
 
         Papel papel = papeis.get(papeis.indexOf(papelAtualizado));
-
         papel.setPapelAtualizado(papelAtualizado);
+        adapter.notifyDataSetChanged();
 
-        poeNaTela();
 
     }
+
+
 
 
     //Criaçao de menus
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
+        Log.i("MainActivity","criando Menu ");
+
         MenuInflater inflater =  getMenuInflater();
         inflater.inflate(R.menu.menu_carteira,menu);
 
-        return super.onCreateOptionsMenu(menu);
+        return true;
+
     }
 
     @Override
@@ -111,9 +111,13 @@ public class MainActivity extends Activity implements AtualizaAcaoDelegate {
 
         if(itemClicado == R.id.novoPapel)
         {
-            Intent ir = new Intent(this, CadastroPapel.class);
+            Intent ir = new Intent(this, CadastroPapelActivity.class);
             startActivity(ir);
 
+        }else if(itemClicado == R.id.apagarTudo)
+        {
+            carteiraController.apagarTudo();
+            adapter.notifyDataSetChanged();
         }
 
 
@@ -130,6 +134,11 @@ public class MainActivity extends Activity implements AtualizaAcaoDelegate {
         super.onDestroy();
 
         this.evento.desregistra(getAcaoApplication());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
 

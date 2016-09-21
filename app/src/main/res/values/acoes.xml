@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="array_acoes">
+        <item>ELPL3</item>
+        <item>ELPL4</item>
+        <item>ALLL11</item>
+        <item>ABEV3</item>
+        <item>BBAS3</item>
+        <item>BBSE3</item>
+        <item>BVMF3</item>
+        <item>BBDC4</item>
+        <item>BRAP4</item>
+        <item>BRML3</item>
+        <item>BRPR3</item>
+        <item>BRKM5</item>
+        <item>BRFS3</item>
+        <item>CCRO3</item>
+        <item>CMIG4</item>
+        <item>CTIP3</item>
+        <item>HGTX3</item>
+        <item>CIEL3</item>
+        <item>CESP6</item>
+        <item>CSNA3</item>
+        <item>CPLE6</item>
+        <item>CSAN3</item>
+        <item>CPFE3</item>
+        <item>CYRE3</item>
+        <item>DURA4</item>
+        <item>ECOR3</item>
+        <item>ENBR3</item>
+        <item>ELET3</item>
+        <item>ELET6</item>
+        <item>EMBR3</item>
+        <item>EQTL3</item>
+        <item>ESTC3</item>
+        <item>EVEN3</item>
+        <item>FIBR3</item>
+        <item>GFSA3</item>
+        <item>GGBR4</item>
+        <item>GOLL4</item>
+        <item>PCAR3</item>
+        <item>PCAR4</item>
+        <item>HYPE3</item>
+        <item>ITUB4</item>
+        <item>ITSA4</item>
+        <item>JBSS3</item>
+        <item>KLBN4</item>
+        <item>KROT3</item>
+        <item>LIGH3</item>
+        <item>RENT3</item>
+        <item>LAME4</item>
+        <item>LREN3</item>
+        <item>POMO3</item>
+        <item>POMO4</item>
+        <item>MRFG3</item>
+        <item>MRVE3</item>
+        <item>MULT3</item>
+        <item>NATU3</item>
+        <item>TMAR5</item>
+        <item>TNLP3</item>
+        <item>TNLP4</item>
+        <item>PDGR3</item>
+        <item>PETR3</item>
+        <item>PETR4</item>
+        <item>QUAL3</item>
+        <item>RADL3</item>
+        <item>SBSP3</item>
+        <item>SANB11</item>
+        <item>SMLE3</item>
+        <item>CRUZ3</item>
+        <item>SUZB5</item>
+        <item>SUZB6</item>
+        <item>TLPP4</item>
+        <item>TCSL3</item>
+        <item>TCSL4</item>
+        <item>TBLE3</item>
+        <item>UGPA3</item>
+        <item>USIM5</item>
+        <item>VALE3</item>
+        <item>VALE5 </item>
+
+    </string-array>
+
+
+</resources>
